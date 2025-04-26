@@ -6,6 +6,9 @@ void	select_things(t_philo *philo, char **av)
 	philo->time_die = ft_atoi(av[2]);
 	philo->time_eat = ft_atoi(av[3]);
 	philo->time_sleep = ft_atoi(av[4]);
+	philo->opt_arg = -1;
+	if(av[5])
+		philo->opt_arg = ft_atoi(av[5]);
 }
 
 int ft_space_num(char c)
@@ -74,4 +77,5 @@ int main(int ac, char **av)
 	}
 	philo = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	select_things(philo, av);
+	
 }
