@@ -1,14 +1,14 @@
 #include "philo.h"
 
-void	select_things(t_philo *philo, char **av)
+void	select_things(t_data *data, char **av)
 {
-	philo->num_philo = ft_atoi(av[1]);
-	philo->time_die = ft_atoi(av[2]);
-	philo->time_eat = ft_atoi(av[3]);
-	philo->time_sleep = ft_atoi(av[4]);
-	philo->opt_arg = -1;
+	data->num_philo = ft_atoi(av[1]);
+	data->time_die = ft_atoi(av[2]);
+	data->time_eat = ft_atoi(av[3]);
+	data->time_sleep = ft_atoi(av[4]);
+	data->opt_arg = -1;
 	if(av[5])
-		philo->opt_arg = ft_atoi(av[5]);
+		data->opt_arg = ft_atoi(av[5]);
 }
 
 int ft_space_num(char c)
@@ -68,14 +68,14 @@ int check_argument(int ac, char **av)
 
 int main(int ac, char **av)
 {
-	t_philo *philo;
+	t_data *data;
 
 	if (check_argument(ac, av))
 	{
 		printf("Invalid Arguments\n");
 		exit (1);
 	}
-	philo = malloc(sizeof(t_philo) * ft_atoi(av[1]));
-	select_things(philo, av);
+	data = malloc(sizeof(t_data) * ft_atoi(av[1]));
+	select_things(data, av);
 	
 }
