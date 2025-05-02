@@ -77,9 +77,5 @@ int main(int ac, char **av)
 	}
 	data = malloc(sizeof(t_data) * ft_atoi(av[1]));
 	select_things(data, av);
-	init_all(data);
-    create_threads(data);
-    join_threads(data);
-    clean_all(data);
     free(data);
 }

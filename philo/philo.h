@@ -12,12 +12,13 @@ typedef struct s_data t_data;
 typedef struct s_philo
 {
 	int				id;
-	int				left_fork;
-	int				right_fork;
-	int				eat_count;
-	int				last_meal_count;
-	t_data			*data;
+	int				time;
+	int				count_meals;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 	pthread_t		thread;
+	long long		last_meal;
+	t_data			*data;
 }	t_philo;
 
 typedef struct s_data
@@ -27,19 +28,16 @@ typedef struct s_data
 	int				time_eat;
 	int				time_sleep;
 	int				opt_arg;
-
 	pthread_mutex_t	*forks;
+	long long		start_time;
+	int				dead;
 	pthread_mutex_t	print;
-
+	pthread_mutex_t	death_check;
 	t_philo			*philos;
 }	t_data;
 
 // philo
 void	select_things(t_data *philo, char **av);
-void	init_all(t_data *data);
-void	create_threads(t_data *data);
-void    join_threads(t_data *data);
-void    clean_all(t_data *data);
 
 // parsing
 int ft_space_num(char c);
