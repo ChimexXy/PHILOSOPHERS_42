@@ -45,6 +45,22 @@ int check_int(char *str);
 int av_check(int ac, char **av);
 int check_argument(int ac, char **av);
 
+//routine
+void	*death_checker(void *arg);
+void eat_philo(t_philo *philo);
+void sleep_philo(t_philo *philo);
+void think_philo(t_philo *philo);
+void	*philo_routine(void *arg);
+
+//init
+long long get_time(void);
+void join_threads(t_data *data);
+void start_threads(t_data *data);
+void init_mutexes(t_data *data);
+void init_philosophers(t_data *data);
+void	init_forks(t_data *data)
+
+
 // utils
 int ft_atoi(char *str);
 

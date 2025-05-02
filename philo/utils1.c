@@ -20,3 +20,12 @@ int ft_atoi(char *str)
 	return (res);
 }
 
+void	ft_usleep(long long time_in_ms)
+{
+	long long start;
+
+	start = get_time();
+	while ((get_time() - start) < time_in_ms)
+		usleep(500); // bach ma y3ti9 lb CPU bzaf
+}
+

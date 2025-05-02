@@ -80,5 +80,7 @@ int main(int ac, char **av)
 		init_forks(data);
 	init_mutexes(data);
 	init_philosophers(data);
+	start_threads(data);
+	join_threads(data);
     free(data);
 }
