@@ -1,34 +1,22 @@
 #include "philo.h"
 
-void	*death_checker(void *arg)
+int check_death(t_philo *philo)
 {
-	t_data	*data;
-	int		i;
+	long long now;
 
-	data = (t_data *)arg;
-	while (1)
+	now = get_time();
+	pthread_mutex_lock(&philo->data->death_check);
+	if (now - philo->last_meal >= philo->data->time_die)
 	{
-		i = 0;
-		while (i < data->num_philo)
-		{
-			pthread_mutex_lock(&data->death_check);
-			if (get_time() - data->philos[i].last_meal > data->time_die)
-			{
-				pthread_mutex_lock(&data->print);
-				printf("%lld %d died 💀\n", get_time() - data->start_time, data->philos[i].id);
-				data->dead = 1;
-				pthread_mutex_unlock(&data->print);
-				pthread_mutex_unlock(&data->death_check);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&data->death_check);
-			i++;
-		}
-		usleep(500); // avoid CPU overload
+		pthread_mutex_lock(&philo->data->print);
+		printf("%lld %d died 💀\n", now - philo->data->start_time, philo->id);
+		pthread_mutex_unlock(&philo->data->print);
+		pthread_mutex_unlock(&philo->data->death_check);
+		return (1);
 	}
-	return (NULL);
+	pthread_mutex_unlock(&philo->data->death_check);
+	return (0);
 }
-
 
 void eat_philo(t_philo *philo)
 {
@@ -77,16 +65,11 @@ void	*philo_routine(void *arg)
 
     while (1)
     {
-        pthread_mutex_lock(&philo->data->death_check);
-        if (philo->data->dead)
-        {
-            pthread_mutex_unlock(&philo->data->death_check);
-            break;
-        }
-        pthread_mutex_unlock(&philo->data->death_check);
-        eat_philo(philo);
-        sleep_philo(philo);
-        think_philo(philo);
+		think_philo(philo);
+		eat_philo(philo);
+		sleep_philo(philo);
+		if (check_death(philo) == 1)
+			exit (1);
     }
     return (NULL);
 }

@@ -30,7 +30,6 @@ typedef struct s_data
 	int				opt_arg;
 	pthread_mutex_t	*forks;
 	long long		start_time;
-	int				dead;
 	pthread_mutex_t	print;
 	pthread_mutex_t	death_check;
 	t_philo			*philos;
@@ -58,10 +57,11 @@ void join_threads(t_data *data);
 void start_threads(t_data *data);
 void init_mutexes(t_data *data);
 void init_philosophers(t_data *data);
-void	init_forks(t_data *data)
+void	init_forks(t_data *data);
 
 
 // utils
+void	ft_usleep(long long time_in_ms);
 int ft_atoi(char *str);
 
 #endif

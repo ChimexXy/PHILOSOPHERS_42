@@ -5,6 +5,9 @@ void	init_forks(t_data *data)
 	int	i;
 
 	i = 0;
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philo);
+	if (!data->forks)
+		return ;
 	while (i < data->num_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
