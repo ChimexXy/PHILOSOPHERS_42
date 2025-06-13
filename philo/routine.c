@@ -69,7 +69,7 @@ void	*philo_routine(void *arg)
 		eat_philo(philo);
 		sleep_philo(philo);
 		if (check_death(philo) == 1)
-			exit (1);
+			return (NULL);
     }
     return (NULL);
 }
