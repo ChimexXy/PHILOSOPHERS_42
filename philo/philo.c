@@ -1,6 +1,5 @@
 #include "philo.h"
 
-
 int	is_valid_argument(char *str)
 {
 	int	i;
@@ -41,20 +40,6 @@ void	select_things(t_data *data, char **av)
 		data->opt_arg = -1;
 }
 
-// int validate_arguments_content(int ac, char **av)
-// {
-// 	int	i;
-
-// 	i = 1;
-// 	while(i < ac)
-// 	{
-// 		if (is_valid_argument(av[i]))
-// 			return (1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
 int check_argument(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
@@ -79,9 +64,12 @@ int	main(int ac, char **av)
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
-	if (check_argument(ac, av) || initialize_data(data, av))
+	if (check_argument(ac, av))
+	{
+		printf("Invalid Arguments :( \n");
 		return (1);
-	if (start_simulation(data))
+	}
+	if (initialize_data(data, av) || start_simulation(data))
 		return (1);
 	join_threads(data);
 	clean_data(data);
