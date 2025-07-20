@@ -1,57 +1,65 @@
 #include "philo.h"
 
+
+int	is_valid_argument(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	validate_arguments_content(int ac, char **av)
+{
+	int	i;
+
+	i = 1;
+	while (i < ac)
+	{
+		if (is_valid_argument(av[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	select_things(t_data *data, char **av)
 {
 	data->num_philo = ft_atoi(av[1]);
 	data->time_die = ft_atoi(av[2]);
 	data->time_eat = ft_atoi(av[3]);
 	data->time_sleep = ft_atoi(av[4]);
-	data->opt_arg = -1;
-	if(av[5])
+	if (av[5])
 		data->opt_arg = ft_atoi(av[5]);
+	else
+		data->opt_arg = -1;
 }
 
-int ft_space_num(char c)
-{
-	if (c == 32 || (c >= 9 && c <= 13) 
-		|| c == '+' || (c >= '0' && c <= '9'))
-		return (0);
-	return (1);
-}
+// int validate_arguments_content(int ac, char **av)
+// {
+// 	int	i;
 
-int check_int(char *str)
-{
-	int i;
-
-	i = 0;
-	while(str[i])
-	{
-		if(ft_space_num(str[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int av_check(int ac, char **av)
-{
-	int	i;
-
-	i = 1;
-	while(i < ac)
-	{
-		if (check_int(av[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
+// 	i = 1;
+// 	while(i < ac)
+// 	{
+// 		if (is_valid_argument(av[i]))
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 int check_argument(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
 		return (1);
-	if (av_check(ac, av))
+	if (validate_arguments_content(ac, av))
 		return (1);
 	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > 200)
 		return (1);
@@ -66,21 +74,16 @@ int check_argument(int ac, char **av)
 	return (0);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_data *data;
+	t_data	*data;
 
-	if (check_argument(ac, av))
-	{
-		printf("Invalid Arguments\n");
-		exit (1);
-	}
-	data = malloc(sizeof(t_data) * ft_atoi(av[1]));
-	select_things(data, av);
-	init_forks(data);
-	init_mutexes(data);
-	init_philosophers(data);
-	start_threads(data);
+	data = malloc(sizeof(t_data));
+	if (check_argument(ac, av) || initialize_data(data, av))
+		return (1);
+	if (start_simulation(data))
+		return (1);
 	join_threads(data);
-    free(data);
+	clean_data(data);
+	return (0);
 }
